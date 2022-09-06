@@ -1,0 +1,1 @@
+magick.exe convert .\16.png .\32.png .\64.png .\128.png .\256.png pic2nc.ico
