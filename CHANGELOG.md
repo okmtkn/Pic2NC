@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - GitへInitial Commit
 - ディレクトリ構成を変更
+- 他のクラスから操作を簡易化ため，ScannerTwainのpublicメソッドを整理
 
 ## [2.0.17] - 2022-09-06
 ### Changed

@@ -10,6 +10,28 @@ ScannerTwain::~ScannerTwain()
 
 }
 
+bool ScannerTwain::Scan(QString filename)
+{
+    bool ret = false;
+    if(LoadDLL()){
+        if(OpenSourceManager()){
+            if(OpenSource()){
+                TwainSetting();
+                if(Enabled()){
+                    if(TransferImage(filename)){
+                        ret = true;
+                    }
+                    Disabled();
+                }
+                CloseSource();
+            }
+            CloseSourceManager();
+        }
+        UnLoadDLL();
+    }
+    return ret;
+}
+
 float ScannerTwain::Fix32ToFloat(TW_FIX32 fix32)
 {
     float floater;
@@ -181,7 +203,7 @@ bool ScannerTwain::Disabled()
     return TRUE;
 }
 
-bool ScannerTwain::TransferImage(void){
+bool ScannerTwain::TransferImage(QString filename){
     LPBITMAPINFOHEADER	bi;		//BITMAPINFOHEADERのポインタ
     TW_PENDINGXFERS		PendingXfers;
     TW_UINT32	hBitmap;		//画像情報(BITMAPINFOHEADER + 画像データ)
@@ -201,7 +223,7 @@ bool ScannerTwain::TransferImage(void){
             if(bi != NULL){
 
                 //画像を一旦ファイルに保存してから再度読み込む
-                if (WriteImage(bi) == FALSE){	//BMPファイル保存
+                if (WriteImage(bi, filename) == FALSE){	//BMPファイル保存
                     qDebug("BMP Write Error");
                     lpfnDSM_Entry( &pAppId, &pSourceId, DG_CONTROL, DAT_PENDINGXFERS, MSG_ENDXFER, &PendingXfers );	//終了処理
                     return FALSE;
@@ -233,7 +255,7 @@ bool ScannerTwain::TransferImage(void){
     return TRUE;
 }
 
-bool ScannerTwain::WriteImage(LPBITMAPINFOHEADER bi){
+bool ScannerTwain::WriteImage(LPBITMAPINFOHEADER bi, QString filename){
     DWORD	hsize;
     FILE	*fp;
     BITMAPFILEHEADER	bf;
@@ -241,7 +263,7 @@ bool ScannerTwain::WriteImage(LPBITMAPINFOHEADER bi){
     //BMPのヘッダのサイズ
     hsize = sizeof(BITMAPFILEHEADER) + sizeof(BITMAPINFOHEADER);
 
-    if((fp = fopen("temp.bmp", "w")) == NULL){
+    if((fp = fopen(filename.toUtf8(), "w")) == NULL){
         return FALSE;
     }
 
