@@ -804,6 +804,9 @@
            </item>
            <item row="1" column="1">
             <widget class="QSpinBox" name="spinBoxTimePerBlock">
+             <property name="statusTip">
+              <string>To calucurate estimated time.</string>
+             </property>
              <property name="maximum">
               <number>99</number>
              </property>
