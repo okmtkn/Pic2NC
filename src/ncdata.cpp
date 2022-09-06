@@ -263,7 +263,6 @@ void NcData::SetCuttingPoint(int x, int y)
 }
 
 
-
 //4近傍と8近傍を交互に繰り返すことで，4方向ではなく8方向に収縮させている
 bool NcData::Closing(int pixel)
 {

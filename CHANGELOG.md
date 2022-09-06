@@ -24,6 +24,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - NCデータからトレーリングゼロ消去
 - 描画エンジンを変更し線見やすくする
 
+
+## [2.0.18] - 2022-09-06
+### Changed
+- GitへInitial Commit
+- ディレクトリ構成を変更
+
 ## [2.0.17] - 2022-09-06
 ### Changed
 - UIを見やすく小変更

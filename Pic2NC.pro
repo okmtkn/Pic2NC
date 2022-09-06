@@ -9,23 +9,23 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    cuttingpoint.cpp \
-    imageprocessing.cpp \
-    main.cpp \
-    mainwindow.cpp \
-    ncdata.cpp \
-    scannertwain.cpp
+    src/cuttingpoint.cpp \
+    src/imageprocessing.cpp \
+    src/main.cpp \
+    src/mainwindow.cpp \
+    src/ncdata.cpp \
+    src/scannertwain.cpp
 
 HEADERS += \
-    cuttingpoint.h \
-    imageprocessing.h \
-    mainwindow.h \
-    ncdata.h \
-    scannertwain.h \
-    twain.h
+    src/cuttingpoint.h \
+    src/imageprocessing.h \
+    src/mainwindow.h \
+    src/ncdata.h \
+    src/scannertwain.h \
+    src/twain.h
 
 FORMS += \
-    mainwindow.ui
+    src/mainwindow.ui
 
 
 INCLUDEPATH += C:\OpenCV\opencv4.6.0\build_vs15\include
