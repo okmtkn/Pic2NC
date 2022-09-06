@@ -109,25 +109,10 @@ void MainWindow::on_pushButtonScan_clicked()
 {
     ScannerTwain *scan = new ScannerTwain((HWND)this->winId());
 
-    if(scan->LoadDLL()){
-        if(scan->OpenSourceManager()){
-            if(scan->OpenSource()){
-                scan->TwainSetting();
-                if(scan->Enabled()){
-                    if(scan->TransferImage()){
-                        //画像読み込み
-                        QString file_name = "temp.bmp";
-                        OpenImageFile(file_name);
-                        input_file_name_ = QString::fromStdString(MakeTimeString()) + ".bmp";
-                    }
-                    scan->Disabled();
-                }
-                scan->CloseSource();
-            }
-            scan->CloseSourceManager();
-        }
-        scan->UnLoadDLL();
-    }
+    scan->Scan("temp.bmp");
+    OpenImageFile("temp.bmp");
+    input_file_name_ = QString::fromStdString(MakeTimeString()) + ".bmp";
+
     delete scan;
 }
 

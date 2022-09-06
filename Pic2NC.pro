@@ -25,7 +25,7 @@ HEADERS += \
     src/twain.h
 
 FORMS += \
-    src/mainwindow.ui
+    mainwindow.ui
 
 
 INCLUDEPATH += C:\OpenCV\opencv4.6.0\build_vs15\include
