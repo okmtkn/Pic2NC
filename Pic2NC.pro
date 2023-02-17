@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     src/cuttingpoint.cpp \
+    src/drawingmousescene.cpp \
     src/imageprocessing.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
@@ -18,6 +19,7 @@ SOURCES += \
 
 HEADERS += \
     src/cuttingpoint.h \
+    src/drawingmousescene.h \
     src/imageprocessing.h \
     src/mainwindow.h \
     src/ncdata.h \

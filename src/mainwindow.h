@@ -24,6 +24,7 @@
 #include "imageprocessing.h"
 #include "ncdata.h"
 #include "scannertwain.h"
+#include "drawingmousescene.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -68,6 +69,14 @@ private slots:
     void on_pushButtonOpenNcData_clicked();
 
 
+    void on_horizontalSlider_valueChanged(int value);
+
+    void on_radioButton_toggled(bool checked);
+
+    void on_tabWidgetImageDrawing_currentChanged(int index);
+
+    void on_pushButtonClear_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -82,8 +91,9 @@ private:
     QRubberBand *rubber_band_;
     QPoint mouse_clicked_point_;
     QRect selected_rect_;
-
     QGraphicsScene scene_nc_;
+
+    DrawingMouseScene scene_drawing_;
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

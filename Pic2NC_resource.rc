@@ -1,6 +1,6 @@
 #include <windows.h>
 
-IDI_ICON1	ICON	DISCARDABLE	"C:\\Users\\Sotsuken06A\\GoogleDrive\\Programming\\Qt\\Pic2NC\\Pic2NC\\resource\\pic2nc.ico"
+IDI_ICON1	ICON	DISCARDABLE	"C:\\Users\\Sotsuken06C\\GoogleDrive\\Programming\\Qt\\Pic2NC\\Pic2NC_Tablet\\resource\\pic2nc.ico"
 
 VS_VERSION_INFO VERSIONINFO
 	FILEVERSION 0,0,0,0
