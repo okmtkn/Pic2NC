@@ -23,6 +23,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     setAcceptDrops(true);   //Drag & Dropを全てのwidgetで有効化する
 
+    ui->graphicsViewDrawing->setScene(&scene_drawing_);
+
     ui->statusBar->showMessage("Ready. Open your image file.");
 }
 
@@ -323,6 +325,13 @@ void MainWindow::on_pushButtonOpenDirectory_clicked()
 
 void MainWindow::on_pushButtonGenrerate_clicked()
 {
+    //Drawing領域に手描きした場合
+    if(ui->tabWidgetImageDrawing->currentIndex() == 1){
+        QString file_name = output_directory_name_ + "/tmp.png";
+        QPixmap(ui->graphicsViewDrawing->grab()).save(file_name);
+        OpenImageFile(file_name);
+    }
+
     if(image_ == std::nullptr_t()){
         return;
     }
@@ -478,3 +487,35 @@ std::string MainWindow::MakeTimeString()
     // std::stringにして値を返す
     return s.str();
 }
+
+void MainWindow::on_horizontalSlider_valueChanged(int value)
+{
+    scene_drawing_.pen_.setWidth(value);
+}
+
+
+void MainWindow::on_radioButton_toggled(bool checked)
+{
+    if(checked){
+        scene_drawing_.pen_.setColor(Qt::black);
+    } else {
+        scene_drawing_.pen_.setColor(Qt::white);
+    }
+}
+
+
+void MainWindow::on_tabWidgetImageDrawing_currentChanged(int index)
+{
+    if(index == 1){
+        ui->pushButtonGenrerate->setEnabled(true);
+    } else if(image_ == std::nullptr_t()) {
+        ui->pushButtonGenrerate->setEnabled(false);
+    }
+}
+
+
+void MainWindow::on_pushButtonClear_clicked()
+{
+    ui->graphicsViewDrawing->scene()->clear();
+}
+

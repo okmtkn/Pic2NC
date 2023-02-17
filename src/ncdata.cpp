@@ -455,6 +455,7 @@ void NcData::RemoveLinearCuttingPoint()
                 cutting_point_output_[length_output_].set_cutting_code_(1);
                 length_output_++;
                 G1_i = output_point_num;
+                i = G1_i + 2;
             }
         } else if(cutting_point_all_[i].get_cutting_code_() == 0) {
             //前回リトラクトした点とi-1点の距離がちかければ，一周して戻ってきたということ．前回リトラクトした点をG1として出力する．
