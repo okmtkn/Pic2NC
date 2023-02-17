@@ -25,6 +25,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - 描画エンジンを変更し線見やすくする
 
 
+## [2.0.19] - 2022-09-06
+### Added
+- Tablet modeを追加
+
 ## [2.0.18] - 2022-09-06
 ### Changed
 - GitへInitial Commit
