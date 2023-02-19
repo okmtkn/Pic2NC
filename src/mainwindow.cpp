@@ -393,11 +393,13 @@ void MainWindow::on_pushButtonGenrerate_clicked()
     ui->lineEditG00Length->setText(QString::number(int(g0_length)));
     ui->lineEditG01Length->setText(QString::number(int(g1_length)));
     ui->lineEditTotalLength->setText(QString::number(int(g0_length+g1_length)));
-    ui->lineEditTotalTime->setText(QString::number(min) + ":" + QString::number(sec));
-
+    if(sec<10){
+        ui->lineEditTotalTime->setText(QString::number(min) + ":0" + QString::number(sec));
+    } else {
+        ui->lineEditTotalTime->setText(QString::number(min) + ":" + QString::number(sec));
+    }
 
     delete nc_data;
-
 
     QFile g_code(output_file_name_);
     if( ! g_code.open(QIODevice::ReadOnly) ){

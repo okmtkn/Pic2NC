@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>896</width>
-    <height>626</height>
+    <height>676</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -836,7 +836,10 @@
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1,0">
+     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="2,2,1">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
       <item>
        <widget class="QTabWidget" name="tabWidgetImageDrawing">
         <property name="currentIndex">
@@ -1062,7 +1065,7 @@
         <property name="title">
          <string>NC Data</string>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_4">
+        <layout class="QVBoxLayout" name="verticalLayout_4" stretch="1,0">
          <item>
           <widget class="QTextEdit" name="textEdit">
            <property name="mouseTracking">
@@ -1118,6 +1121,18 @@
            </item>
            <item row="4" column="1">
             <widget class="QLineEdit" name="lineEditTotalTime">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="readOnly">
               <bool>true</bool>
              </property>
@@ -1125,6 +1140,18 @@
            </item>
            <item row="3" column="1">
             <widget class="QLineEdit" name="lineEditTotalLength">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="readOnly">
               <bool>true</bool>
              </property>
@@ -1132,6 +1159,18 @@
            </item>
            <item row="2" column="1">
             <widget class="QLineEdit" name="lineEditG01Length">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="readOnly">
               <bool>true</bool>
              </property>
@@ -1139,6 +1178,18 @@
            </item>
            <item row="1" column="1">
             <widget class="QLineEdit" name="lineEditG00Length">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="readOnly">
               <bool>true</bool>
              </property>
@@ -1146,6 +1197,18 @@
            </item>
            <item row="0" column="1">
             <widget class="QLineEdit" name="lineEditNumOfBlock">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
              <property name="readOnly">
               <bool>true</bool>
              </property>

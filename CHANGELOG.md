@@ -25,7 +25,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - 描画エンジンを変更し線見やすくする
 
 
-## [2.0.19] - 2022-09-06
+## [2.0.20] - 2023-02-19
+### Fixed
+- Estimated timeにゼロフィルを追加
+
+## [2.0.19] - 2023-02-17
 ### Added
 - Tablet modeを追加
 
