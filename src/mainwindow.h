@@ -19,7 +19,6 @@
 
 #include <QTextStream>
 
-
 #include <opencv2/opencv.hpp>
 #include "imageprocessing.h"
 #include "ncdata.h"
