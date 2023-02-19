@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>896</width>
-    <height>676</height>
+    <width>1005</width>
+    <height>690</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -836,7 +836,7 @@
      </widget>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="2,2,1">
+     <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="10,10,1">
       <property name="sizeConstraint">
        <enum>QLayout::SetDefaultConstraint</enum>
       </property>
@@ -945,73 +945,61 @@
          <attribute name="title">
           <string>Drawing</string>
          </attribute>
-         <layout class="QVBoxLayout" name="verticalLayout_12" stretch="0,1">
+         <layout class="QVBoxLayout" name="verticalLayout_11" stretch="0,1">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="1,0">
+           <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="0,1,0,0,0,0">
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_11">
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_7">
-                <item>
-                 <widget class="QLabel" name="label_10">
-                  <property name="text">
-                   <string>Pen Width</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QSlider" name="horizontalSlider">
-                  <property name="minimum">
-                   <number>5</number>
-                  </property>
-                  <property name="maximum">
-                   <number>40</number>
-                  </property>
-                  <property name="value">
-                   <number>20</number>
-                  </property>
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QSpinBox" name="spinBox">
-                  <property name="minimum">
-                   <number>5</number>
-                  </property>
-                  <property name="maximum">
-                   <number>40</number>
-                  </property>
-                  <property name="value">
-                   <number>20</number>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <layout class="QHBoxLayout" name="horizontalLayout_8">
-                <item>
-                 <widget class="QRadioButton" name="radioButton">
-                  <property name="text">
-                   <string>Pen</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QRadioButton" name="radioButton_2">
-                  <property name="text">
-                   <string>Eraser</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
+             <widget class="QLabel" name="label_10">
+              <property name="text">
+               <string>Pen Width</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="horizontalSlider">
+              <property name="minimum">
+               <number>5</number>
+              </property>
+              <property name="maximum">
+               <number>40</number>
+              </property>
+              <property name="value">
+               <number>20</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="spinBox">
+              <property name="minimum">
+               <number>5</number>
+              </property>
+              <property name="maximum">
+               <number>40</number>
+              </property>
+              <property name="value">
+               <number>20</number>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="radioButton">
+              <property name="text">
+               <string>Pen</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="radioButton_2">
+              <property name="text">
+               <string>Eraser</string>
+              </property>
+             </widget>
             </item>
             <item>
              <widget class="QPushButton" name="pushButtonClear">
@@ -1083,7 +1071,7 @@
           </widget>
          </item>
          <item>
-          <layout class="QGridLayout" name="gridLayout_6" columnstretch="1,0">
+          <layout class="QGridLayout" name="gridLayout_6" columnstretch="0,0" columnminimumwidth="0,0">
            <item row="0" column="0">
             <widget class="QLabel" name="label_22">
              <property name="text">
@@ -1122,7 +1110,7 @@
            <item row="4" column="1">
             <widget class="QLineEdit" name="lineEditTotalTime">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -1141,7 +1129,7 @@
            <item row="3" column="1">
             <widget class="QLineEdit" name="lineEditTotalLength">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -1160,7 +1148,7 @@
            <item row="2" column="1">
             <widget class="QLineEdit" name="lineEditG01Length">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -1179,7 +1167,7 @@
            <item row="1" column="1">
             <widget class="QLineEdit" name="lineEditG00Length">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -1198,7 +1186,7 @@
            <item row="0" column="1">
             <widget class="QLineEdit" name="lineEditNumOfBlock">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -1228,7 +1216,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>896</width>
+     <width>1005</width>
      <height>21</height>
     </rect>
    </property>
