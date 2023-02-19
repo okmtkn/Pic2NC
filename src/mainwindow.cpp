@@ -434,8 +434,8 @@ void MainWindow::MessageBoxAbout()
 {
     QString text =
             "<span style=\"font-size:xx-large; font-weight:bold\">Pic2NC</span><br>"
-            "Version 2.0.19<br><br>"
-            "Copyright (C) 2022 Nanshin Institute of Technology. Ken OKAMOTO.<br>"
+            "Version 2.0.20<br><br>"
+            "Copyright (C) 2023 Nanshin Institute of Technology. Ken OKAMOTO.<br>"
             "<a href=\"https://nanshinkotan.ac.jp/\">"
             "https://nanshinkotan.ac.jp/</a><br><br><br>"
 
