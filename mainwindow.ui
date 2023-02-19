@@ -1075,35 +1075,35 @@
            <item row="0" column="0">
             <widget class="QLabel" name="label_22">
              <property name="text">
-              <string>No. of Cutting Points</string>
+              <string># of Cutting Points</string>
              </property>
             </widget>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_11">
              <property name="text">
-              <string>Positioning Length [mm]</string>
+              <string>G00 Length[mm]</string>
              </property>
             </widget>
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_12">
              <property name="text">
-              <string>Cutting Length [mm]</string>
+              <string>G01 Length[mm]</string>
              </property>
             </widget>
            </item>
            <item row="3" column="0">
             <widget class="QLabel" name="label_14">
              <property name="text">
-              <string>Total Length [mm]</string>
+              <string>Total Length[mm]</string>
              </property>
             </widget>
            </item>
            <item row="4" column="0">
             <widget class="QLabel" name="label_13">
              <property name="text">
-              <string>Estimated Time [mm:ss]</string>
+              <string>Estimated Time[m:s]</string>
              </property>
             </widget>
            </item>
