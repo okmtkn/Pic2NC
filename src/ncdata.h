@@ -10,6 +10,9 @@
 
 #include <QGraphicsScene>
 #include <QGraphicsItem>
+#include <QFile>
+#include <QTextStream>
+#include <QFileInfo>
 
 #include "cuttingpoint.h"
 
@@ -46,11 +49,13 @@ public:
     float GetG0Length();
     float GetG1Length();
     float GetTotalTime();
+    QString GetOutputString();
     int   get_length_output_();
+    void  OutputFile();
 
 public:
     //SearchCuttingPoint()の冒頭で1%に設定し，
-    //2optで98%にして，
+    //NC処理でで90%にして，
     //保存まで完了しきったら100%にしている
     void set_progress_bar_value_(int value);
 
@@ -64,7 +69,7 @@ private:
     void MakeCuttingCode(); //各切削点にG0 or G1を設定する関数
     void RemoveIsolatedCuttingPoint();
     void RemoveLinearCuttingPoint();
-    void OutputNcData(); //送り方向を計算しながら，切削点を削減する
+    void GenerateNcString();
 
     float  CalcDistance(CuttingPoint p1, CuttingPoint p2);
     int    CalcDistanceLite(CuttingPoint p1, CuttingPoint p2);
@@ -74,6 +79,7 @@ private:
     bool   IsEdge4(int x, int y);
     bool   IsEdge8(int x, int y);
 
+
 private:
     QList<CuttingPoint> cutting_point_all_;
     QList<CuttingPoint> cutting_point_output_;
@@ -82,6 +88,7 @@ private:
     int   progress_bar_value_ = 0;
 
     QString output_file_name_;
+    QString output_ascii_data_;
 
     QImage image_;
     float work_width_;
