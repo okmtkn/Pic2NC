@@ -373,6 +373,7 @@ void MainWindow::on_pushButtonGenrerate_clicked()
     connect(nc_data, SIGNAL(ProgressBarValueChanged(int)), this, SLOT(SetProgressBarValue(int)));
 
     nc_data->GenerateNcData();
+    nc_data->OutputFile();
 
 
     ui->statusBar->showMessage("Drawing tool path...");
@@ -398,20 +399,10 @@ void MainWindow::on_pushButtonGenrerate_clicked()
         ui->lineEditTotalTime->setText(QString::number(min) + ":" + QString::number(sec));
     }
 
-    delete nc_data;
-
-    QFile g_code(output_file_name_);
-    if( ! g_code.open(QIODevice::ReadOnly) ){
-        QMessageBox::information(this, tr("Unable to open file"), g_code.errorString());
-        return;
-    }
-    QTextStream text_stream( &g_code );
-
     ui->textEdit->clear();
-    ui->textEdit->setText(text_stream.readAll());
-    g_code.close();
+    ui->textEdit->setText(nc_data->GetOutputString());
 
-
+    delete nc_data;
 
     ui->pushButtonGenrerate->setDisabled(false);
     ui->pushButtonOpenNcData->setDisabled(false);
@@ -433,7 +424,7 @@ void MainWindow::MessageBoxAbout()
 {
     QString text =
             "<span style=\"font-size:xx-large; font-weight:bold\">Pic2NC</span><br>"
-            "Version 2.0.21<br><br>"
+            "Version 2.0.22<br><br>"
             "Copyright (C) 2023 Nanshin Institute of Technology. Ken OKAMOTO.<br>"
             "<a href=\"https://nanshinkotan.ac.jp/\">"
             "https://nanshinkotan.ac.jp/</a><br><br><br>"
