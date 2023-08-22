@@ -24,9 +24,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - NCデータからトレーリングゼロ消去
 - 描画エンジンを変更し線見やすくする
 
+## [2.0.23] - 2023-08-22
+### Add
+- DXF形式のファイル出力に対応
+
 ## [2.0.22] - 2023-08-22
 ### Changed
-- file pointerの利用を廃止し，QFileの利用に変更．
+- file pointerの利用を廃止し，QFileの利用に変更
 
 ## [2.0.21] - 2023-08-22
 ### Changed
