@@ -62,10 +62,6 @@ NcData::NcData(QImage image,
     cutter_r_ = cutter_r;
     pickfeed_ = pickfeed;
 
-    //cutting_pointの数は，最大でimage_width_*image_height_個あればいい
-    cutting_point_all_ = new CuttingPoint[image.width() * image.height()];
-    cutting_point_output_ = new CuttingPoint[image.width() * image.height()];
-
     //NCデータのスケール,原点位置を設定
     float scale_x = work_width_ / image_.width();
     float scale_y = work_height_ / image_.height();
@@ -80,8 +76,7 @@ NcData::NcData(QImage image,
 
 NcData::~NcData()
 {
-    delete [] cutting_point_all_;
-    delete [] cutting_point_output_;
+
 }
 
 void NcData::GenerateNcData()
@@ -93,9 +88,6 @@ void NcData::GenerateNcData()
         SearchCuttingPoint();
     }
     set_progress_bar_value_(20);
-
-    //ui->statusBar->showMessage("Optimizing Tool Path...");
-    //nc_data->RouteOptimizationNearestNeighbor();
 
     //ui->statusBar->showMessage("2-opt...");
     RouteOptimization2Opt();
@@ -254,9 +246,7 @@ void NcData::SearchCuttingPointNeighbor(int x, int y)
 //length_all_をカウントしながら，座標・切削コードの設定を行う関数
 void NcData::SetCuttingPoint(int x, int y)
 {
-    cutting_point_all_[length_all_].set_x_(x);
-    cutting_point_all_[length_all_].set_y_(y);
-    length_all_++;
+    cutting_point_all_.append(CuttingPoint(x,y));
 
     //探索済の点は，255と0以外の数値に設定しておく．これが探索済: 足跡となる．
     ((uchar *)image_.bits())[x*image_.depth()/8 + y*image_.bytesPerLine()] = 128;
@@ -392,15 +382,14 @@ void NcData::RemoveIsolatedCuttingPoint()
 {
     int one_tool_path_length = 1;
 
-    for(int i=1; i<length_all_; i++){   //i=0はG0する点だから，確認する必要はない
+    for(int i=1; i<cutting_point_all_.size(); i++){   //i=0はG0する点だから，確認する必要はない
         if(cutting_point_all_[i].get_cutting_code_() == 1){
             one_tool_path_length ++;    //G1が連続する数をカウントする
         } else {    //G0のとき
             if(one_tool_path_length <= num_of_ignore_){  //ここでG0する前回の切削経路で，連続するG1が少なければ
-                for(int j=0; j<length_all_-i; j++){
-                    cutting_point_all_[i+j-one_tool_path_length] = cutting_point_all_[i+j];
+                for(int j=0; j<one_tool_path_length; j++){
+                    cutting_point_all_.removeAt(i-j-1);
                 }
-                length_all_ -= one_tool_path_length;
                 i -= one_tool_path_length;
             }
             one_tool_path_length = 1;
@@ -409,7 +398,9 @@ void NcData::RemoveIsolatedCuttingPoint()
 
     //最後のG0が余計な経路ならば除去する．
     if(one_tool_path_length <= num_of_ignore_){
-        length_all_ -= one_tool_path_length;
+        for(int j=0; j<one_tool_path_length; j++){
+            cutting_point_all_.removeAt(cutting_point_all_.size()-j-1);
+        }
     }
 }
 
@@ -423,14 +414,14 @@ void NcData::RemoveLinearCuttingPoint()
     float max_distance = 0;
     int   output_point_num;
 
-    cutting_point_output_[0] = cutting_point_all_[0];
+    cutting_point_output_.append(cutting_point_all_[0]);
     cutting_point_output_[0].set_cutting_code_(0);
-    length_output_++;
+
     //前回G1を出力した点No.
     int G1_i = 0;
     int G0_i = 0;
 
-    for(int i=2; i<length_all_; i++){
+    for(int i=2; i<cutting_point_all_.size(); i++){
         if(cutting_point_all_[i].get_cutting_code_() == 1){ //G1する候補ならば
             //前回の送り方向から，大きく方向が変わる点のみをG1出力する．
             a = cutting_point_all_[G1_i].get_y_() - cutting_point_all_[i].get_y_();
@@ -451,110 +442,40 @@ void NcData::RemoveLinearCuttingPoint()
                 }
             }
             if( max_distance > tolerance_ ){
-                cutting_point_output_[length_output_] = cutting_point_all_[output_point_num];
-                cutting_point_output_[length_output_].set_cutting_code_(1);
-                length_output_++;
+                cutting_point_output_.append(cutting_point_all_[output_point_num]);
+                cutting_point_output_.last().set_cutting_code_(1);
                 G1_i = output_point_num;
                 i = G1_i + 2;
             }
         } else if(cutting_point_all_[i].get_cutting_code_() == 0) {
             //前回リトラクトした点とi-1点の距離がちかければ，一周して戻ってきたということ．前回リトラクトした点をG1として出力する．
             if(CalcDistanceLite(cutting_point_all_[i-1], cutting_point_all_[G0_i]) <= retract_threshold_){
-                cutting_point_output_[length_output_] = cutting_point_all_[G0_i];
-                cutting_point_output_[length_output_].set_cutting_code_(1);
-                length_output_++;
+                cutting_point_output_.append(cutting_point_all_[G0_i]);
+                cutting_point_output_.last().set_cutting_code_(1);
             } else if(G1_i != i-1){  //前回値を出力していなかった場合は，出力しておく．この点は，非ループ形状の終点だ．
-                cutting_point_output_[length_output_] = cutting_point_all_[i-1];
-                cutting_point_output_[length_output_].set_cutting_code_(1);
-                length_output_++;
+                cutting_point_output_.append(cutting_point_all_[i-1]);
+                cutting_point_output_.last().set_cutting_code_(1);
             }
-            cutting_point_output_[length_output_] = cutting_point_all_[i];
-            cutting_point_output_[length_output_].set_cutting_code_(0);
-            length_output_++;
+            cutting_point_output_.append(cutting_point_all_[i]);
+            cutting_point_output_.last().set_cutting_code_(0);
             G0_i = i;
             G1_i = i;
         }
     }
     //切削点データの最後の点がループ形状なら，次の点を出力しておく．
-    if(CalcDistanceLite(cutting_point_all_[length_all_-1], cutting_point_all_[G0_i]) < retract_threshold_){
-        cutting_point_output_[length_output_] = cutting_point_all_[G0_i];
-        cutting_point_output_[length_output_].set_cutting_code_(1);
-        length_output_++;
-    } else if(G1_i != length_all_-1){  //最後の点を出力していなかった場合は，出力しておく
-        cutting_point_output_[length_output_] = cutting_point_all_[length_all_-1];
-        cutting_point_output_[length_output_].set_cutting_code_(1);
-        length_output_++;
+    if(CalcDistanceLite(cutting_point_all_[cutting_point_all_.size()-1], cutting_point_all_[G0_i]) < retract_threshold_){
+        cutting_point_output_.append(cutting_point_all_[G0_i]);
+        cutting_point_output_.last().set_cutting_code_(1);
+    } else if(G1_i != cutting_point_all_.size()-1){  //最後の点を出力していなかった場合は，出力しておく
+        cutting_point_output_.append(cutting_point_all_[cutting_point_all_.size()-1]);
+        cutting_point_output_.last().set_cutting_code_(1);
     }
-}
-
-
-void NcData::RouteOptimizationNearestNeighbor()
-{
-    CuttingPoint tmp_point;
-    float min_distance;
-    float tmp_distance;
-    int next_num;
-
-    cutting_point_all_[0].set_cutting_code_(0);//最初の点はG0でアプローチする点だ
-
-    for(int i=0; i<length_all_-2; i++){//注目点
-
-        set_progress_bar_value_( 1 + int(98./float(length_all_-2)*i) ) ;
-        //長い処理中にGUIの応答がなくなって固まるので対策
-        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
-
-        //i+1点目を，仮に最小距離とする
-        min_distance = CalcDistanceLite(cutting_point_all_[i], cutting_point_all_[i+1]);
-        next_num = i+1;
-        //ルートなしの簡易距離が2px点以下の点は，8近傍だ．これが最近傍点だから，これ以上計算する必要はない．
-        if(min_distance <= 1){
-            cutting_point_all_[i+1].set_cutting_code_(1);
-            continue;
-        }
-        //i+2点目以降で，最も近い切削点と端点を探す
-        for(int j=i+2; j<length_all_; j++){//注目点の次にくる切削点の候補
-            tmp_distance = CalcDistanceLite(cutting_point_all_[i], cutting_point_all_[j]);
-
-            //全ての切削点のうち，最も近い点の候補
-            if(min_distance > tmp_distance){
-                min_distance = tmp_distance;
-                next_num = j;
-                //ルートなしの簡易距離が2px点の点は，8近傍だ．これが最近傍点だから，これ以上計算する必要はない．
-                if(min_distance <= 1){
-                    break;
-                }
-            }
-        }
-
-        //i+1とjを入れ替える
-        // todo: 切削点は見つけた段階ですでにある程度整列されているのだから，単に入れ替えるのではなくシフトすると高速化できると思う
-        if(next_num != i+1){
-            tmp_point = cutting_point_all_[i+1];
-            cutting_point_all_[i+1] = cutting_point_all_[next_num];
-            cutting_point_all_[next_num] = tmp_point;
-        }
-
-        if(min_distance <= retract_threshold_ ){
-            cutting_point_all_[i+1].set_cutting_code_(1);
-        } else {
-            cutting_point_all_[i+1].set_cutting_code_(0);
-        }
-    }
-
-    //データ最後の点のcutting codeを決定する
-    if(CalcDistanceLite(cutting_point_all_[length_all_-2], cutting_point_all_[length_all_-1]) <= retract_threshold_ ){
-        cutting_point_all_[length_all_-1].set_cutting_code_(1);
-    } else {
-        cutting_point_all_[length_all_-1].set_cutting_code_(0);
-    }
-
-    return;
 }
 
 
 void NcData::RouteOptimization2Opt()
 {
-    if(length_all_<=2){
+    if(cutting_point_all_.size()<=2){
         return;
     }
 
@@ -567,7 +488,7 @@ void NcData::RouteOptimization2Opt()
 
     CuttingPoint tmp_point; //切削点の入れ替えに使うtmp
 
-    int *distance = new int[length_all_-1];
+    int *distance = new int[cutting_point_all_.size()-1];
 
     //リトラクトするコストを与えることで，総切削距離が短い経路を選ぶようになる
     //この値は，距離の近似計算方式に合わせて計算する
@@ -582,19 +503,19 @@ void NcData::RouteOptimization2Opt()
         opt = false;
 
         //高速化のため，あらかじめ点間の距離を配列に格納しておく．
-        for(int i=0; i<length_all_-1; i++){
+        for(int i=0; i<cutting_point_all_.size()-1; i++){
             distance[i] = CalcDistanceLite(cutting_point_all_[i], cutting_point_all_[i+1]);
             if(distance[i] > retract_threshold_ ){  //リトラクトするコストを与えることで，総切削距離が短い経路を選ぶようになる
                 distance[i] += retract_cost;
             }
         }
 
-        for(int i=0; i<length_all_-3; i++){
+        for(int i=0; i<cutting_point_all_.size()-3; i++){
             //すでに十分近い点は，最適化の計算から除外する
             if(distance[i] == 1) continue;
             max_distance = 0;
             max_j = 0;
-            for(int j=i+2; j<length_all_-2; j++){
+            for(int j=i+2; j<cutting_point_all_.size()-2; j++){
                 //すでに十分近い点は，経路の交換先から除外する
                 if(distance[j] == 1) continue;
                 distance_ij = CalcDistanceLite(cutting_point_all_[i],cutting_point_all_[j]);
@@ -644,7 +565,7 @@ void NcData::MakeCuttingCode()
     //データ最初の点は，G0する点だ
     cutting_point_all_[0].set_cutting_code_(0);
 
-    for(int i=0; i<length_all_-1; i++){
+    for(int i=0; i<cutting_point_all_.size()-1; i++){
         //次の点がG0する点なのか，G1する点なのか設定する
         if(CalcDistanceLite(cutting_point_all_[i], cutting_point_all_[i+1]) <= retract_threshold_){
             cutting_point_all_[i+1].set_cutting_code_(1);
@@ -673,7 +594,7 @@ void NcData::OutputNcData()
     fprintf(fp,"X%.3lfY%.3lf;\n", cutting_point_output_[0].get_x_()*scale_ + offset_x_, - cutting_point_output_[0].get_y_()*scale_ + offset_y_);
     fprintf(fp,"G1Z%.3lf;\n", cutting_depth_ + offset_z_);
 
-    for(int i=1; i<length_output_; i++){
+    for(int i=1; i<cutting_point_output_.size(); i++){
         if(cutting_point_output_[i].get_cutting_code_() == 1){ //G1する候補ならば
             fprintf(fp,"X%.3lfY%.3lf;\n", cutting_point_output_[i].get_x_()*scale_ + offset_x_, - cutting_point_output_[i].get_y_()*scale_ + offset_y_);
         } else {
@@ -702,7 +623,7 @@ void NcData::DrawNcView(QGraphicsScene *scene, QRect view_size)
     //scene->setBackgroundBrush(Qt::black);
     scene->clear();
 
-    for(int i=0; i<length_output_-1; i++){
+    for(int i=0; i<cutting_point_output_.size()-1; i++){
         if(cutting_point_output_[i+1].get_cutting_code_() == 0){
             scene->addLine(cutting_point_output_[i].get_x_() * scale,
                            cutting_point_output_[i].get_y_() * scale,
@@ -725,7 +646,7 @@ float NcData::GetG0Length()
 {
     float g0_length = 0;
     //i=0は最初の点なので計算から除外する
-    for (int i=1; i<length_output_; i++){
+    for (int i=1; i<cutting_point_output_.size(); i++){
         if(cutting_point_output_[i].get_cutting_code_() == 0){
             g0_length += CalcDistance(cutting_point_output_[i-1], cutting_point_output_[i]) + retract_height_;
         }
@@ -739,7 +660,7 @@ float NcData::GetG1Length()
 {
     float g1_length = 0;
     //i=0は最初の点なので計算から除外する
-    for (int i=1; i<length_output_; i++){
+    for (int i=1; i<cutting_point_output_.size(); i++){
         if(cutting_point_output_[i].get_cutting_code_() == 0){
             g1_length += retract_height_;
         } else {
@@ -752,7 +673,7 @@ float NcData::GetG1Length()
 
 int NcData::get_length_output_()
 {
-    return length_output_;
+    return cutting_point_output_.size();
 }
 
 

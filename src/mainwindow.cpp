@@ -347,7 +347,6 @@ void MainWindow::on_pushButtonGenrerate_clicked()
     QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
 
     NcData *nc_data;
-    //output_file_name_ = output_directory_name_ + "/" + QFileInfo(input_file_name_).baseName() + ui->comboBoxFormat->currentText();
 
     //出力ファイル名を設定する．
     output_file_name_ = output_directory_name_ + "/" + QFileInfo(input_file_name_).baseName() + ui->comboBoxFormat->currentText();
@@ -385,8 +384,8 @@ void MainWindow::on_pushButtonGenrerate_clicked()
     float g0_length = nc_data->GetG0Length();
     float g1_length = nc_data->GetG1Length();
     float minF = g0_length/ui->spinBoxG00Speed->value() +
-            g1_length/ui->spinBoxFeedRate->value() +
-       num_of_block * ui->spinBoxTimePerBlock->value()*0.001/60.;
+                 g1_length/ui->spinBoxFeedRate->value() +
+                 num_of_block * ui->spinBoxTimePerBlock->value()*0.001/60.;
     int min = int(minF);
     int sec = 60*(minF - min);
     ui->lineEditNumOfBlock->setText(QString::number(num_of_block));
@@ -434,7 +433,7 @@ void MainWindow::MessageBoxAbout()
 {
     QString text =
             "<span style=\"font-size:xx-large; font-weight:bold\">Pic2NC</span><br>"
-            "Version 2.0.20<br><br>"
+            "Version 2.0.21<br><br>"
             "Copyright (C) 2023 Nanshin Institute of Technology. Ken OKAMOTO.<br>"
             "<a href=\"https://nanshinkotan.ac.jp/\">"
             "https://nanshinkotan.ac.jp/</a><br><br><br>"

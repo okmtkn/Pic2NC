@@ -6,6 +6,7 @@ class CuttingPoint
 {
 public:
     CuttingPoint();
+    CuttingPoint(int x, int y);
     ~CuttingPoint();
 
 public:
