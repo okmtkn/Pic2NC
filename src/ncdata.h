@@ -50,7 +50,7 @@ public:
 
 public:
     //SearchCuttingPoint()の冒頭で1%に設定し，
-    //RouteOptimizationNearestNeighbor()で98%にして，
+    //2optで98%にして，
     //保存まで完了しきったら100%にしている
     void set_progress_bar_value_(int value);
 
@@ -60,7 +60,6 @@ signals:
 private:
     void SearchCuttingPoint(); //画像全域から切削点を探して格納する
     bool OffsetPocketMilling();   //ポケット加工をoffset[mm]で実行する関数
-    void RouteOptimizationNearestNeighbor();
     void RouteOptimization2Opt();
     void MakeCuttingCode(); //各切削点にG0 or G1を設定する関数
     void RemoveIsolatedCuttingPoint();
@@ -76,12 +75,9 @@ private:
     bool   IsEdge8(int x, int y);
 
 private:
-    CuttingPoint *cutting_point_all_ = std::nullptr_t();
-    CuttingPoint *cutting_point_output_ = std::nullptr_t();
-    int   length_all_ = 0;       //全てのcutting pointの数
-    int   length_output_ = 0;    //出力に使うcutting pointの数
+    QList<CuttingPoint> cutting_point_all_;
+    QList<CuttingPoint> cutting_point_output_;
     float retract_threshold_ = 3; //このピクセル数以下が，連続しているとみなす．
-    //double direction_threshold_ = 0.005; //このradian数以下なら，直線とみなす．0.02:poor, 0.01:good, 0.005:nice, 0.001:heavy
 
     int   progress_bar_value_ = 0;
 
