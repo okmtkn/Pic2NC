@@ -13,6 +13,7 @@
 #include <QFile>
 #include <QTextStream>
 #include <QFileInfo>
+#include <QMessageBox>
 
 #include "cuttingpoint.h"
 
@@ -25,6 +26,7 @@ public:
     //NcData(cv::Mat image);    //将来的にQImageにしたい．廃止予定．
     NcData(QImage image,
            QString output_file_name,
+           QString file_type,
            float work_width,
            float work_height,
            float retract_height,
@@ -51,7 +53,7 @@ public:
     float GetTotalTime();
     QString GetOutputString();
     int   get_length_output_();
-    void  OutputFile();
+
 
 public:
     //SearchCuttingPoint()の冒頭で1%に設定し，
@@ -70,6 +72,7 @@ private:
     void RemoveIsolatedCuttingPoint();
     void RemoveLinearCuttingPoint();
     void GenerateNcString();
+    void GenerateDxfString();
 
     float  CalcDistance(CuttingPoint p1, CuttingPoint p2);
     int    CalcDistanceLite(CuttingPoint p1, CuttingPoint p2);
@@ -78,7 +81,7 @@ private:
     bool   Closing(int pixel);   //収縮処理をpixel回だけ実行する関数．
     bool   IsEdge4(int x, int y);
     bool   IsEdge8(int x, int y);
-
+    void   OutputFile();
 
 private:
     QList<CuttingPoint> cutting_point_all_;
@@ -88,6 +91,7 @@ private:
     int   progress_bar_value_ = 0;
 
     QString output_file_name_;
+    QString file_type_;
     QString output_ascii_data_;
 
     QImage image_;

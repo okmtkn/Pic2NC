@@ -353,6 +353,7 @@ void MainWindow::on_pushButtonGenrerate_clicked()
 
     nc_data = new NcData(image_->get_output_image_(),
                          output_file_name_,
+                         ui->comboBoxFormat->currentText(),
                          ui->doubleSpinBoxWorkWidth->value(),
                          ui->doubleSpinBoxWorkHeight->value(),
                          ui->doubleSpinBoxRetract->value(),
@@ -373,8 +374,6 @@ void MainWindow::on_pushButtonGenrerate_clicked()
     connect(nc_data, SIGNAL(ProgressBarValueChanged(int)), this, SLOT(SetProgressBarValue(int)));
 
     nc_data->GenerateNcData();
-    nc_data->OutputFile();
-
 
     ui->statusBar->showMessage("Drawing tool path...");
     nc_data->DrawNcView( &scene_nc_, ui->graphicsView->rect() );    //scene_nc_をnc_dataに渡して描画してもらう
@@ -424,7 +423,7 @@ void MainWindow::MessageBoxAbout()
 {
     QString text =
             "<span style=\"font-size:xx-large; font-weight:bold\">Pic2NC</span><br>"
-            "Version 2.0.22<br><br>"
+            "Version 2.0.23<br><br>"
             "Copyright (C) 2023 Nanshin Institute of Technology. Ken OKAMOTO.<br>"
             "<a href=\"https://nanshinkotan.ac.jp/\">"
             "https://nanshinkotan.ac.jp/</a><br><br><br>"
