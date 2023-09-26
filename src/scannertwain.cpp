@@ -136,7 +136,6 @@ bool ScannerTwain::OpenSource()
     pSourceId.Id=0;
 
     //DS選択のダイアログ表示
-    rc = lpfnDSM_Entry( &pAppId, NULL, DG_CONTROL, DAT_IDENTITY, MSG_GETDEFAULT, &pSourceId );
     rc = lpfnDSM_Entry( &pAppId, NULL, DG_CONTROL, DAT_IDENTITY, MSG_USERSELECT, &pSourceId );
 
     if(rc == TWRC_CANCEL){
