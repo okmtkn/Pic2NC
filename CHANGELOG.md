@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - NCデータからトレーリングゼロ消去
 - 描画エンジンを変更し線見やすくする
 
-## ## [2.0.24] - 2023-09-26
+## [2.0.24] - 2023-09-26
 ### Add
 - STL形式のファイル出力に対応
 
