@@ -4,6 +4,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 
+CONFIG += static
+
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
@@ -29,7 +31,6 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
-
 INCLUDEPATH += C:\OpenCV\opencv4.6.0\build_vs15\include
 #LIBS += C:\OpenCV\opencv4.6.0\release\lib\libopencv_calib3d460.dll.a
 LIBS += C:\OpenCV\opencv4.6.0\release\lib\libopencv_core460.dll.a
@@ -46,6 +47,8 @@ LIBS += C:\OpenCV\opencv4.6.0\release\lib\libopencv_imgproc460.dll.a
 #LIBS += C:\OpenCV\opencv4.6.0\release\lib\libopencv_ts460.a
 #LIBS += C:\OpenCV\opencv4.6.0\release\lib\libopencv_video460.dll.a
 #LIBS += C:\OpenCV\opencv4.6.0\release\lib\libopencv_videoio460.dll.a
+
+
 
 RC_ICONS = resource/pic2nc.ico
 

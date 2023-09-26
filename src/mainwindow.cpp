@@ -368,7 +368,8 @@ void MainWindow::on_pushButtonGenrerate_clicked()
                          ui->groupBoxOffsetPocketMilling->isChecked(),
                          ui->checkBoxCutterCompensation->isChecked(),
                          ui->doubleSpinBoxToolR->value(),
-                         ui->doubleSpinBoxPickfeed->value()
+                         ui->doubleSpinBoxPickfeed->value(),
+                         ui->doubleSpinBox_StlHeight->value()
                          );
 
     connect(nc_data, SIGNAL(ProgressBarValueChanged(int)), this, SLOT(SetProgressBarValue(int)));
@@ -379,8 +380,8 @@ void MainWindow::on_pushButtonGenrerate_clicked()
     nc_data->DrawNcView( &scene_nc_, ui->graphicsView->rect() );    //scene_nc_をnc_dataに渡して描画してもらう
     ui->graphicsView->fitInView(scene_nc_.itemsBoundingRect(), Qt::KeepAspectRatio);
     ui->graphicsView->setSceneRect(scene_nc_.itemsBoundingRect());
-
-    int num_of_block = nc_data->get_length_output_();
+    
+    int num_of_block = nc_data->get_cutting_point_length_();
     float g0_length = nc_data->GetG0Length();
     float g1_length = nc_data->GetG1Length();
     float minF = g0_length/ui->spinBoxG00Speed->value() +
@@ -398,8 +399,20 @@ void MainWindow::on_pushButtonGenrerate_clicked()
         ui->lineEditTotalTime->setText(QString::number(min) + ":" + QString::number(sec));
     }
 
+
+    //出力ファイルの文字列を表示する．
+    //ただし，文字数が多いと表示が重くなるので，先頭の100行だけ表示する．
     ui->textEdit->clear();
-    ui->textEdit->setText(nc_data->GetOutputString());
+    QString display_string = nc_data->GetOutputString();
+    int num_of_line = display_string.count("\n");
+    if(num_of_line > 100){
+        display_string = display_string.section("\n", 0, 99);
+        display_string.append("\n...\n");
+    }
+    ui->textEdit->setText(display_string);
+
+
+    //ui->textEdit->setText(nc_data->GetOutputString());
 
     delete nc_data;
 
@@ -423,7 +436,7 @@ void MainWindow::MessageBoxAbout()
 {
     QString text =
             "<span style=\"font-size:xx-large; font-weight:bold\">Pic2NC</span><br>"
-            "Version 2.0.23<br><br>"
+            "Version 2.0.24<br><br>"
             "Copyright (C) 2023 Nanshin Institute of Technology. Ken OKAMOTO.<br>"
             "<a href=\"https://nanshinkotan.ac.jp/\">"
             "https://nanshinkotan.ac.jp/</a><br><br><br>"
