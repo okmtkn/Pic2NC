@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - 描画のzoomに対応
 - NC dataの編集に対応
 - テキストビュワーでアドレスとデータの書式を変更
+- User Settingの保存・呼び出し・デフォルト復元機能
 
 ### Fixed
 - Generateボタンを複数回クリックすると何度も処理されてしまう
@@ -23,6 +24,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - NCデータからトレーリングゼロ消去
 - 描画エンジンを変更し線見やすくする
+
+## [2.0.25] - 2023-09-27
+### Fix
+- STL形式でNormal vectorを正しく出力するように修正
+- 画像ファイルをオープンしたとき，描画タブを切り替えるように変更
+- プログレスバーの挙動をファイル保存前に100%になるように変更
+- STL形式の場合にoffset pocket millingを無効に変更
 
 ## [2.0.24] - 2023-09-26
 ### Add
