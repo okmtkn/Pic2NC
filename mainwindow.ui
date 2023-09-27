@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1005</width>
+    <width>1033</width>
     <height>690</height>
    </rect>
   </property>
@@ -857,14 +857,14 @@
            <item>
             <widget class="QLabel" name="label_18">
              <property name="text">
-              <string>Height</string>
+              <string>Height [mm]</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QDoubleSpinBox" name="doubleSpinBox_StlHeight">
              <property name="value">
-              <double>3.000000000000000</double>
+              <double>1.500000000000000</double>
              </property>
             </widget>
            </item>
@@ -1009,7 +1009,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSlider" name="horizontalSlider">
+             <widget class="QSlider" name="horizontalSliderPenWidth">
               <property name="minimum">
                <number>5</number>
               </property>
@@ -1025,7 +1025,7 @@
              </widget>
             </item>
             <item>
-             <widget class="QSpinBox" name="spinBox">
+             <widget class="QSpinBox" name="spinBoxPenWidth">
               <property name="minimum">
                <number>5</number>
               </property>
@@ -1269,7 +1269,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1005</width>
+     <width>1033</width>
      <height>21</height>
     </rect>
    </property>
@@ -1287,6 +1287,7 @@
     </property>
     <addaction name="actionSave_Sttings"/>
     <addaction name="actionLoad_Settings"/>
+    <addaction name="actionRestore_Default_Settings"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -1304,6 +1305,9 @@
    <property name="text">
     <string>Open</string>
    </property>
+   <property name="statusTip">
+    <string>Open image file from storage.</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
    </property>
@@ -1311,6 +1315,9 @@
   <action name="actionQuit">
    <property name="text">
     <string>Quit</string>
+   </property>
+   <property name="statusTip">
+    <string>Quit application.</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
@@ -1320,15 +1327,24 @@
    <property name="text">
     <string>About Pic2NC</string>
    </property>
+   <property name="statusTip">
+    <string>About Pic2NC application.</string>
+   </property>
   </action>
   <action name="actionAbout_Qt">
    <property name="text">
+    <string>About Qt</string>
+   </property>
+   <property name="statusTip">
     <string>About Qt</string>
    </property>
   </action>
   <action name="actionSave_Sttings">
    <property name="text">
     <string>Save Sttings</string>
+   </property>
+   <property name="statusTip">
+    <string>Save current settings to ini file.</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -1338,8 +1354,19 @@
    <property name="text">
     <string>Load Settings</string>
    </property>
+   <property name="statusTip">
+    <string>Load settings from ini file.</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionRestore_Default_Settings">
+   <property name="text">
+    <string>Restore Default Settings</string>
+   </property>
+   <property name="statusTip">
+    <string>Restore default settings.</string>
    </property>
   </action>
  </widget>
@@ -1388,7 +1415,7 @@
      <y>148</y>
     </hint>
     <hint type="destinationlabel">
-     <x>311</x>
+     <x>393</x>
      <y>153</y>
     </hint>
    </hints>
@@ -1400,7 +1427,7 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>311</x>
+     <x>393</x>
      <y>153</y>
     </hint>
     <hint type="destinationlabel">
@@ -1420,7 +1447,7 @@
      <y>179</y>
     </hint>
     <hint type="destinationlabel">
-     <x>311</x>
+     <x>393</x>
      <y>184</y>
     </hint>
    </hints>
@@ -1432,7 +1459,7 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>311</x>
+     <x>393</x>
      <y>184</y>
     </hint>
     <hint type="destinationlabel">
@@ -1452,7 +1479,7 @@
      <y>117</y>
     </hint>
     <hint type="destinationlabel">
-     <x>311</x>
+     <x>393</x>
      <y>122</y>
     </hint>
    </hints>
@@ -1464,7 +1491,7 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>311</x>
+     <x>393</x>
      <y>122</y>
     </hint>
     <hint type="destinationlabel">
@@ -1506,9 +1533,9 @@
    </hints>
   </connection>
   <connection>
-   <sender>horizontalSlider</sender>
+   <sender>horizontalSliderPenWidth</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>spinBox</receiver>
+   <receiver>spinBoxPenWidth</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -1516,24 +1543,72 @@
      <y>268</y>
     </hint>
     <hint type="destinationlabel">
-     <x>252</x>
-     <y>271</y>
+     <x>214</x>
+     <y>280</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>spinBox</sender>
+   <sender>spinBoxPenWidth</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>horizontalSlider</receiver>
+   <receiver>horizontalSliderPenWidth</receiver>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>246</x>
-     <y>259</y>
+     <x>214</x>
+     <y>280</y>
     </hint>
     <hint type="destinationlabel">
      <x>106</x>
      <y>272</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionSave_Sttings</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>SlotSaveSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>516</x>
+     <y>344</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLoad_Settings</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>SlotLoadSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>516</x>
+     <y>344</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRestore_Default_Settings</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>SlotLoadDefaultSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>516</x>
+     <y>344</y>
     </hint>
    </hints>
   </connection>
@@ -1542,5 +1617,8 @@
   <slot>OpenImageFileDialog()</slot>
   <slot>MessageBoxAbout()</slot>
   <slot>MessageBoxAboutQt()</slot>
+  <slot>SlotSaveSettings()</slot>
+  <slot>SlotLoadSettings()</slot>
+  <slot>SlotLoadDefaultSettings()</slot>
  </slots>
 </ui>

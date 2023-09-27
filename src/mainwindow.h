@@ -15,9 +15,14 @@
 #include <QRubberBand>
 #include <QMimeData>
 
+
 #include <QGraphicsScene>
 
 #include <QTextStream>
+
+
+#include <QSettings> //設定の保存と読み込み
+#include <QTextCodec> //iniファイルのファイル名指定のため
 
 #include <opencv2/opencv.hpp>
 #include "imageprocessing.h"
@@ -44,10 +49,42 @@ private slots:
     void MessageBoxAbout();
     void MessageBoxAboutQt();
 
+    // Function: SaveSettings
+    // 設定を保存する．
+    void SlotSaveSettings();
+
+    // Function: LoadSettings
+    // 設定を読み込む．
+    void SlotLoadSettings();
+
+    // Function: LoadDefaultSettings
+    // デフォルトの設定を読み込む．
+    void SlotLoadDefaultSettings();
+
 private:
+    // Function: ShowImage
+    // 画像をUIに表示する．
     void ShowImage(void);
+
+    // Function: OpenImageFile
+    // 画像ファイルを開く．
     void OpenImageFile(QString file_name); //image_をdeleteしてからnewする関数のため，image_ではなくMainWindowのメンバとした．
+
+    // Function: MakeTimeString
+    // 現在時刻を文字列で返す．
     std::string MakeTimeString();
+
+    // Function: SaveSettings
+    // 設定を保存する．
+    void SaveSettings();
+
+    // Function: LoadSettings
+    // 設定を読み込む．
+    void LoadSettings();
+
+    // Function: LoadDefaultSettings
+    // デフォルトの設定を読み込む．
+    void LoadDefaultSettings();
 
 public slots:
     void SetProgressBarValue(int value);
@@ -67,14 +104,13 @@ private slots:
 
     void on_pushButtonOpenNcData_clicked();
 
-
-    void on_horizontalSlider_valueChanged(int value);
-
     void on_radioButton_toggled(bool checked);
 
     void on_tabWidgetImageDrawing_currentChanged(int index);
 
     void on_pushButtonClear_clicked();
+
+    void on_horizontalSliderPenWidth_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;
