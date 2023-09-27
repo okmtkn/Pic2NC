@@ -90,6 +90,9 @@ void MainWindow::OpenImageFile(QString file_name)
         ui->progressBar->setValue(0);
         ui->pushButtonOpenNcData->setDisabled(true);
 
+        //タブを切り替える
+        ui->tabWidgetImageDrawing->setCurrentIndex(0);
+
         //画像処理と表示
         image_->ImageProcess();
     }
@@ -436,7 +439,7 @@ void MainWindow::MessageBoxAbout()
 {
     QString text =
             "<span style=\"font-size:xx-large; font-weight:bold\">Pic2NC</span><br>"
-            "Version 2.0.24<br><br>"
+            "Version 2.0.25<br><br>"
             "Copyright (C) 2023 Nanshin Institute of Technology. Ken OKAMOTO.<br>"
             "<a href=\"https://nanshinkotan.ac.jp/\">"
             "https://nanshinkotan.ac.jp/</a><br><br><br>"

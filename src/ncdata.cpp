@@ -86,7 +86,7 @@ NcData::~NcData()
 void NcData::GenerateNcData()
 {
     //ui->statusBar->showMessage("Searching for cutting point...");
-    if(enable_offset_pocket_milling_){
+    if(enable_offset_pocket_milling_ && file_type_ != ".stl"){
         OffsetPocketMilling();
     } else {
         SearchCuttingPoint();
@@ -114,7 +114,7 @@ void NcData::GenerateNcData()
     set_progress_bar_value_(80);
 
     //ui->statusBar->showMessage("Output NC data...");
-    if(file_type_ == ".nc" || file_type_ == ".ncd" ){
+    if(file_type_ == ".nc" || file_type_ == ".ncd"){
         GenerateNcString();
     }
     if(file_type_ == ".dxf"){
@@ -123,7 +123,7 @@ void NcData::GenerateNcData()
     if(file_type_ ==".stl"){
         GenerateStlString();
     }
-    set_progress_bar_value_(90);
+    set_progress_bar_value_(100);
 
     OutputFile();
 }
@@ -1000,6 +1000,7 @@ void NcData::GenerateStlString()
         y2 = -y2 * scale_ + offset_y_ + work_height_;
         x3 =  x3 * scale_ + offset_x_;
         y3 = -y3 * scale_ + offset_y_ + work_height_;
+
         //底面
         output_ascii_data_.append("facet normal 0.0 0.0 -1.0\nouter loop\n");
         output_ascii_data_.append(QString::asprintf("vertex %.6lf %.6lf 0.0\n", x1, y1));
@@ -1053,9 +1054,24 @@ void NcData::GenerateStlString()
                 x3 = x1;
                 y3 = y1;
 
+                //三角形の法線ベクトルを三角形の辺ベクトルの外積として求める
+                double vector1_x = x2 - x1;
+                double vector1_y = y2 - y1;
+                double vector1_z = 0.0;
+                double vector2_x = x3 - x1;
+                double vector2_y = y3 - y1;
+                double vector2_z = stl_height_;
+                double normal_vector_x = vector1_y * vector2_z - vector1_z * vector2_y;
+                double normal_vector_y = vector1_z * vector2_x - vector1_x * vector2_z;
+                double normal_vector_length = sqrt(normal_vector_x*normal_vector_x + normal_vector_y*normal_vector_y);
+                normal_vector_x /= normal_vector_length;
+                normal_vector_y /= normal_vector_length;
+
+
                 if(direction < 0){ //三角形の向きを正回転に記述する
+
                     //側面三角形の下半分
-                    output_ascii_data_.append("facet normal 0.0 0.0 0.0\nouter loop\n");
+                    output_ascii_data_.append(QString::asprintf("facet normal %.6lf %.6lf 0.0\nouter loop\n", normal_vector_x, normal_vector_y));
                     output_ascii_data_.append(QString::asprintf("vertex %.6lf %.6lf 0.0\n", x1, y1));
                     output_ascii_data_.append(QString::asprintf("vertex %.6lf %.6lf 0.0\n", x2, y2));
                     output_ascii_data_.append(QString::asprintf("vertex %.6lf %.6lf %.6lf\n", x3, y3, stl_height_));
@@ -1064,14 +1080,18 @@ void NcData::GenerateStlString()
                     //側面三角形の上半分
                     x3 = x2;
                     y3 = y2;
-                    output_ascii_data_.append("facet normal 0.0 0.0 0.0\nouter loop\n");
+                    output_ascii_data_.append(QString::asprintf("facet normal %.6lf %.6lf 0.0\nouter loop\n", normal_vector_x, normal_vector_y));
                     output_ascii_data_.append(QString::asprintf("vertex %.6lf %.6lf %.6lf\n", x2, y2, stl_height_));
                     output_ascii_data_.append(QString::asprintf("vertex %.6lf %.6lf %.6lf\n", x1, y1, stl_height_));
                     output_ascii_data_.append(QString::asprintf("vertex %.6lf %.6lf 0.0\n", x3, y3));
                     output_ascii_data_.append("endloop\nendfacet\n");
                 } else { //三角形の向きを逆回転に記述する
+                    //法線ベクトルの向きを反転させる
+                    normal_vector_x *= -1;
+                    normal_vector_y *= -1;
+
                     //側面三角形の下半分
-                    output_ascii_data_.append("facet normal 0.0 0.0 0.0\nouter loop\n");
+                    output_ascii_data_.append(QString::asprintf("facet normal %.6lf %.6lf 0.0\nouter loop\n", normal_vector_x, normal_vector_y));
                     output_ascii_data_.append(QString::asprintf("vertex %.6lf %.6lf 0.0\n", x2, y2));
                     output_ascii_data_.append(QString::asprintf("vertex %.6lf %.6lf 0.0\n", x1, y1));
                     output_ascii_data_.append(QString::asprintf("vertex %.6lf %.6lf %.6lf\n", x3, y3, stl_height_));
@@ -1080,7 +1100,7 @@ void NcData::GenerateStlString()
                     //側面三角形の上半分
                     x3 = x2;
                     y3 = y2;
-                    output_ascii_data_.append("facet normal 0.0 0.0 0.0\nouter loop\n");
+                    output_ascii_data_.append(QString::asprintf("facet normal %.6lf %.6lf 0.0\nouter loop\n", normal_vector_x, normal_vector_y));
                     output_ascii_data_.append(QString::asprintf("vertex %.6lf %.6lf %.6lf\n", x1, y1, stl_height_));
                     output_ascii_data_.append(QString::asprintf("vertex %.6lf %.6lf %.6lf\n", x2, y2, stl_height_));
                     output_ascii_data_.append(QString::asprintf("vertex %.6lf %.6lf 0.0\n", x3, y3));
