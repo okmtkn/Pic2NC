@@ -25,6 +25,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->graphicsViewDrawing->setScene(&scene_drawing_);
 
+    //設定データを読み込む
+    LoadSettings();
+
     ui->statusBar->showMessage("Ready. Open your image file.");
 }
 
@@ -439,7 +442,7 @@ void MainWindow::MessageBoxAbout()
 {
     QString text =
             "<span style=\"font-size:xx-large; font-weight:bold\">Pic2NC</span><br>"
-            "Version 2.0.25<br><br>"
+            "Version 2.0.26<br><br>"
             "Copyright (C) 2023 Nanshin Institute of Technology. Ken OKAMOTO.<br>"
             "<a href=\"https://nanshinkotan.ac.jp/\">"
             "https://nanshinkotan.ac.jp/</a><br><br><br>"
@@ -495,9 +498,184 @@ std::string MainWindow::MakeTimeString()
     return s.str();
 }
 
-void MainWindow::on_horizontalSlider_valueChanged(int value)
+void MainWindow::SaveSettings()
 {
-    scene_drawing_.pen_.setWidth(value);
+    //iniファイルのファイル名を設定する．
+    QSettings settings("user_settings.ini", QSettings::IniFormat);
+    settings.setIniCodec(QTextCodec::codecForName("UTF-8"));
+    settings.beginGroup("Noise_Reduction");
+    settings.setValue("Median", ui->spinBoxMedian->value());
+    settings.setValue("White", ui->spinBoxMorphologyOpen->value());
+    settings.setValue("Black", ui->spinBoxMorphologyClose->value());
+    settings.endGroup();
+
+    settings.beginGroup("Save_Directory");
+    settings.setValue("Directory", ui->lineEditSelectDirectory->text());
+    settings.setValue("Filetype", ui->comboBoxFormat->currentIndex());
+    settings.endGroup();
+
+    settings.beginGroup("Cutting_Conditions");
+    settings.setValue("WorkWidth", ui->doubleSpinBoxWorkWidth->value());
+    settings.setValue("WorkHeight", ui->doubleSpinBoxWorkHeight->value());
+    settings.setValue("Retract", ui->doubleSpinBoxRetract->value());
+    settings.setValue("CuttingDepth", ui->doubleSpinBoxCuttingDepth->value());
+    settings.setValue("Spindle", ui->spinBoxSpindle->value());
+    settings.setValue("FeedRate", ui->spinBoxFeedRate->value());
+    settings.endGroup();
+    settings.beginGroup("Origin_Offset");
+    settings.setValue("OffsetX", ui->doubleSpinBoxOffsetX->value());
+    settings.setValue("OffsetY", ui->doubleSpinBoxOffsetY->value());
+    settings.setValue("OffsetZ", ui->doubleSpinBoxOffsetZ->value());
+    settings.endGroup();
+    settings.beginGroup("Pocket_Milling");
+    settings.setValue("GroupBoxOffsetPocketMilling", ui->groupBoxOffsetPocketMilling->isChecked());
+    settings.setValue("CheckBoxCutterCompensation", ui->checkBoxCutterCompensation->isChecked());
+    settings.setValue("ToolR", ui->doubleSpinBoxToolR->value());
+    settings.setValue("Pickfeed", ui->doubleSpinBoxPickfeed->value());
+    settings.endGroup();
+    settings.beginGroup("Polygonal_Approximation");
+    settings.setValue("MinPathLength", ui->spinBoxNumOfIgnore->value());
+    settings.setValue("Tolerance", ui->doubleSpinBoxTolerance->value());
+    settings.endGroup();
+    settings.beginGroup("Machine_Processing Speed");
+    settings.setValue("G00Speed", ui->spinBoxG00Speed->value());
+    settings.setValue("TimePerBlock", ui->spinBoxTimePerBlock->value());
+    settings.endGroup();
+    settings.beginGroup("3D_Options");
+    settings.setValue("StlHeight", ui->doubleSpinBox_StlHeight->value());
+    settings.endGroup();
+    settings.sync();
+}
+
+void MainWindow::LoadSettings()
+{
+    //user_settings.iniが存在するか確認する．
+    //存在しない場合は，デフォルト設定を読み込む．
+    QFile file("user_settings.ini");
+    if(!file.exists()){
+        LoadDefaultSettings();
+        return;
+    }
+
+    QSettings settings("user_settings.ini", QSettings::IniFormat);
+    settings.setIniCodec(QTextCodec::codecForName("UTF-8"));
+    settings.beginGroup("Noise_Reduction");
+    ui->spinBoxMedian->setValue(settings.value("Median").toInt());
+    ui->spinBoxMorphologyOpen->setValue(settings.value("White").toInt());
+    ui->spinBoxMorphologyClose->setValue(settings.value("Black").toInt());
+    settings.endGroup();
+
+    settings.beginGroup("Save_Directory");
+    ui->lineEditSelectDirectory->setText(settings.value("Directory").toString());
+    //ディレクトリが存在しない場合は，デスクトップを設定する．
+    QDir dir(ui->lineEditSelectDirectory->text());
+    if(!dir.exists()){
+        ui->lineEditSelectDirectory->setText(QDir::homePath() + "/" + QStandardPaths::displayName(QStandardPaths::DesktopLocation));
+    }
+
+    ui->comboBoxFormat->setCurrentIndex(settings.value("Filetype").toInt());
+    settings.endGroup();
+
+    settings.beginGroup("Cutting_Conditions");
+    ui->doubleSpinBoxWorkWidth->setValue(settings.value("WorkWidth").toDouble());
+    ui->doubleSpinBoxWorkHeight->setValue(settings.value("WorkHeight").toDouble());
+    ui->doubleSpinBoxRetract->setValue(settings.value("Retract").toDouble());
+    ui->doubleSpinBoxCuttingDepth->setValue(settings.value("CuttingDepth").toDouble());
+    ui->spinBoxSpindle->setValue(settings.value("Spindle").toInt());
+    ui->spinBoxFeedRate->setValue(settings.value("FeedRate").toInt());
+    settings.endGroup();
+    settings.beginGroup("Origin_Offset");
+    ui->doubleSpinBoxOffsetX->setValue(settings.value("OffsetX").toDouble());
+    ui->doubleSpinBoxOffsetY->setValue(settings.value("OffsetY").toDouble());
+    ui->doubleSpinBoxOffsetZ->setValue(settings.value("OffsetZ").toDouble());
+    settings.endGroup();
+    settings.beginGroup("Pocket_Milling");
+    ui->groupBoxOffsetPocketMilling->setChecked(settings.value("GroupBoxOffsetPocketMilling").toBool());
+    ui->checkBoxCutterCompensation->setChecked(settings.value("CheckBoxCutterCompensation").toBool());
+    ui->doubleSpinBoxToolR->setValue(settings.value("ToolR").toDouble());
+    ui->doubleSpinBoxPickfeed->setValue(settings.value("Pickfeed").toDouble());
+    settings.endGroup();
+    settings.beginGroup("Polygonal_Approximation");
+    ui->spinBoxNumOfIgnore->setValue(settings.value("MinPathLength").toInt());
+    ui->doubleSpinBoxTolerance->setValue(settings.value("Tolerance").toDouble());
+    settings.endGroup();
+    settings.beginGroup("Machine_Processing Speed");
+    ui->spinBoxG00Speed->setValue(settings.value("G00Speed").toInt());
+    ui->spinBoxTimePerBlock->setValue(settings.value("TimePerBlock").toInt());
+    settings.endGroup();
+    settings.beginGroup("3D_Options");
+    ui->doubleSpinBox_StlHeight->setValue(settings.value("StlHeight").toDouble());
+    settings.endGroup();
+}
+
+void MainWindow::LoadDefaultSettings()
+{
+    ui->spinBoxMedian->setValue(2);
+    ui->spinBoxMorphologyOpen->setValue(2);
+    ui->spinBoxMorphologyClose->setValue(2);
+
+    ui->comboBoxFormat->setCurrentIndex(0);
+
+    ui->lineEditSelectDirectory->setText(QDir::homePath() + "/" + QStandardPaths::displayName(QStandardPaths::DesktopLocation));
+
+    ui->doubleSpinBoxWorkWidth->setValue(40);
+    ui->doubleSpinBoxWorkHeight->setValue(40);
+    ui->doubleSpinBoxRetract->setValue(2);
+    ui->doubleSpinBoxCuttingDepth->setValue(0);
+    ui->spinBoxSpindle->setValue(3000);
+    ui->spinBoxFeedRate->setValue(360);
+    ui->doubleSpinBoxOffsetX->setValue(0);
+    ui->doubleSpinBoxOffsetY->setValue(0);
+    ui->doubleSpinBoxOffsetZ->setValue(0);
+    ui->doubleSpinBoxToolR->setValue(0);
+    ui->doubleSpinBoxPickfeed->setValue(0.15);
+    ui->spinBoxNumOfIgnore->setValue(3);
+    ui->doubleSpinBoxTolerance->setValue(2);
+    ui->spinBoxG00Speed->setValue(1000);
+    ui->spinBoxTimePerBlock->setValue(25);
+    ui->doubleSpinBox_StlHeight->setValue(1.5);
+}
+
+void MainWindow::SlotSaveSettings()
+{
+    //設定ファイルを上書きしても良いか，確認する．
+    QMessageBox::StandardButton ret;
+    ret = QMessageBox::question(this, tr("Pic2NC"),
+                                tr("Do you want to overwrite the settings file?"),
+                                QMessageBox::Yes | QMessageBox::No);
+    if(ret == QMessageBox::No){
+        return;
+    }
+
+    SaveSettings();
+}
+
+void MainWindow::SlotLoadSettings()
+{
+    //設定ファイルを読み込んでよいか，確認する．
+    QMessageBox::StandardButton ret;
+    ret = QMessageBox::question(this, tr("Pic2NC"),
+                                tr("Do you want to load the settings file?"),
+                                QMessageBox::Yes | QMessageBox::No);
+    if(ret == QMessageBox::No){
+        return;
+    }
+
+    LoadSettings();
+}
+
+void MainWindow::SlotLoadDefaultSettings()
+{
+    //デフォルト設定を復元しても良いか，確認する．
+    QMessageBox::StandardButton ret;
+    ret = QMessageBox::question(this, tr("Pic2NC"),
+                                tr("Do you want to restore the default settings?"),
+                                QMessageBox::Yes | QMessageBox::No);
+    if(ret == QMessageBox::No){
+        return;
+    }
+
+    LoadDefaultSettings();
 }
 
 
@@ -524,5 +702,11 @@ void MainWindow::on_tabWidgetImageDrawing_currentChanged(int index)
 void MainWindow::on_pushButtonClear_clicked()
 {
     ui->graphicsViewDrawing->scene()->clear();
+}
+
+
+void MainWindow::on_horizontalSliderPenWidth_valueChanged(int value)
+{
+    scene_drawing_.pen_.setWidth(value);
 }
 

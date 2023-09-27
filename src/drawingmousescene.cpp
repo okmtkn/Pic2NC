@@ -5,7 +5,6 @@ DrawingMouseScene::DrawingMouseScene(QObject *parent)
 {
     setSceneRect(-10,-10,20,20);
     pen_ = QPen(Qt::black, 20, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-
 }
 
 
