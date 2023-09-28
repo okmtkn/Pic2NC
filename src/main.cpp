@@ -9,6 +9,7 @@ int main(int argc, char *argv[])
 
     a.setStyle("Fusion");
     //a.setStyle("windows");
+    //a.setStyle("WindowsVista");
 
     MainWindow w;
     w.show();
