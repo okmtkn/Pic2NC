@@ -7,8 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    ui->toolButtonSelectDirectory->setIcon(QApplication::style()->standardIcon( QStyle::SP_DialogOpenButton ));
-    ui->pushButtonGenrerate->setIcon(QApplication::style()->standardIcon( QStyle::SP_DialogApplyButton ));
+
     ui->lineEditSelectDirectory->setText(output_directory_name_);
     ui->pushButtonGenrerate->setDisabled(true);
     ui->pushButtonOpenNcData->setDisabled(true);
@@ -24,6 +23,24 @@ MainWindow::MainWindow(QWidget *parent)
     setAcceptDrops(true);   //Drag & Dropを全てのwidgetで有効化する
 
     ui->graphicsViewDrawing->setScene(&scene_drawing_);
+
+    //タブにアイコンをつける
+    ui->tabWidgetImageDrawing->setTabIcon(0, QApplication::style()->standardIcon( QStyle::SP_FileIcon ));
+    ui->tabWidgetImageDrawing->setTabIcon(1, QApplication::style()->standardIcon( QStyle::SP_ComputerIcon ));
+    ui->tabWidget->setTabIcon(0, QApplication::style()->standardIcon( QStyle::SP_DialogApplyButton ));
+    ui->tabWidget->setTabIcon(1, QApplication::style()->standardIcon( QStyle::SP_FileDialogDetailedView ));
+    ui->tabWidget->setTabIcon(2, QApplication::style()->standardIcon( QStyle::SP_FileDialogInfoView  ));
+    ui->tabWidget->setTabIcon(3, QApplication::style()->standardIcon( QStyle::SP_FileDialogInfoView ));
+
+
+    //ボタンにアイコンをつける
+    ui->toolButtonSelectDirectory->setIcon(QApplication::style()->standardIcon( QStyle::SP_DialogOpenButton ));
+    ui->pushButtonGenrerate->setIcon(QApplication::style()->standardIcon( QStyle::SP_DialogApplyButton ));
+    ui->pushButtonOpen->setIcon(QApplication::style()->standardIcon( QStyle::SP_DialogOpenButton ));
+    ui->pushButtonScan->setIcon(QApplication::style()->standardIcon( QStyle::SP_FileIcon ));
+    ui->pushButtonResetTrim->setIcon(QApplication::style()->standardIcon( QStyle::SP_DialogResetButton ));
+    ui->pushButtonOpenNcData->setIcon(QApplication::style()->standardIcon( QStyle::SP_DialogOpenButton ));
+
 
     //設定データを読み込む
     LoadSettings();
@@ -158,13 +175,6 @@ void MainWindow::SelectOutputDirectory()
         ui->statusBar->showMessage("Invalid directory name.");
         return;
     }
-}
-
-
-void MainWindow::MessageBoxAboutQt()
-{
-    QMessageBox msgbox;
-    msgbox.aboutQt(this, tr("About Qt"));
 }
 
 
@@ -442,7 +452,7 @@ void MainWindow::MessageBoxAbout()
 {
     QString text =
             "<span style=\"font-size:xx-large; font-weight:bold\">Pic2NC</span><br>"
-            "Version 2.0.26<br><br>"
+            "Version 2.0.27<br><br>"
             "Copyright (C) 2023 Nanshin Institute of Technology. Ken OKAMOTO.<br>"
             "<a href=\"https://nanshinkotan.ac.jp/\">"
             "https://nanshinkotan.ac.jp/</a><br><br><br>"

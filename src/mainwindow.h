@@ -47,7 +47,6 @@ private slots:
     void OpenImageFileDialog(); //[Open]ボタンを押したときと，Menu->Openを選択したとき
     void SelectOutputDirectory();
     void MessageBoxAbout();
-    void MessageBoxAboutQt();
 
     // Function: SaveSettings
     // 設定を保存する．
