@@ -22,7 +22,7 @@
 
 
 #include <QSettings> //設定の保存と読み込み
-#include <QTextCodec> //iniファイルのファイル名指定のため
+//#include <QTextCodec> //iniファイルのファイル名指定のため //QtV6で廃止？
 
 #include <opencv2/opencv.hpp>
 #include "imageprocessing.h"

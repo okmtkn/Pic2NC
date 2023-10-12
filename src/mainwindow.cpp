@@ -452,7 +452,7 @@ void MainWindow::MessageBoxAbout()
 {
     QString text =
             "<span style=\"font-size:xx-large; font-weight:bold\">Pic2NC</span><br>"
-            "Version 2.0.27<br><br>"
+            "Version 2.0.29<br><br>"
             "Copyright (C) 2023 Nanshin Institute of Technology. Ken OKAMOTO.<br>"
             "<a href=\"https://nanshinkotan.ac.jp/\">"
             "https://nanshinkotan.ac.jp/</a><br><br><br>"
@@ -512,7 +512,7 @@ void MainWindow::SaveSettings()
 {
     //iniファイルのファイル名を設定する．
     QSettings settings("user_settings.ini", QSettings::IniFormat);
-    settings.setIniCodec(QTextCodec::codecForName("UTF-8"));
+    //settings.setIniCodec(QTextCodec::codecForName("UTF-8"));
     settings.beginGroup("Noise_Reduction");
     settings.setValue("Median", ui->spinBoxMedian->value());
     settings.setValue("White", ui->spinBoxMorphologyOpen->value());
@@ -568,7 +568,7 @@ void MainWindow::LoadSettings()
     }
 
     QSettings settings("user_settings.ini", QSettings::IniFormat);
-    settings.setIniCodec(QTextCodec::codecForName("UTF-8"));
+    //settings.setIniCodec(QTextCodec::codecForName("UTF-8"));
     settings.beginGroup("Noise_Reduction");
     ui->spinBoxMedian->setValue(settings.value("Median").toInt());
     ui->spinBoxMorphologyOpen->setValue(settings.value("White").toInt());
@@ -577,6 +577,7 @@ void MainWindow::LoadSettings()
 
     settings.beginGroup("Save_Directory");
     ui->lineEditSelectDirectory->setText(settings.value("Directory").toString());
+    output_directory_name_ = ui->lineEditSelectDirectory->text();
     //ディレクトリが存在しない場合は，デスクトップを設定する．
     QDir dir(ui->lineEditSelectDirectory->text());
     if(!dir.exists()){

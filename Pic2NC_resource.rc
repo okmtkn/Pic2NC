@@ -1,6 +1,6 @@
 #include <windows.h>
 
-IDI_ICON1	ICON	DISCARDABLE	"C:\\Users\\Sotsuken06A\\GoogleDrive\\Programming\\Qt\\Pic2NC\\Pic2NC_QList\\resource\\pic2nc.ico"
+IDI_ICON1	ICON	"C:\\Users\\Sotsuken06A\\GoogleDrive\\Programming\\Qt\\Pic2NC\\Pic2NC_Qt6\\resource\\pic2nc.ico"
 
 VS_VERSION_INFO VERSIONINFO
 	FILEVERSION 0,0,0,0
@@ -11,9 +11,9 @@ VS_VERSION_INFO VERSIONINFO
 #else
 	FILEFLAGS 0x0L
 #endif
-	FILEOS VOS__WINDOWS32
+	FILEOS VOS_NT_WINDOWS32
 	FILETYPE VFT_APP
-	FILESUBTYPE 0x0L
+	FILESUBTYPE VFT2_UNKNOWN
 	BEGIN
 		BLOCK "StringFileInfo"
 		BEGIN
@@ -26,6 +26,9 @@ VS_VERSION_INFO VERSIONINFO
 				VALUE "OriginalFilename", "Pic2NC.exe\0"
 				VALUE "ProductName", "Pic2NC\0"
 				VALUE "ProductVersion", "0.0.0.0\0"
+				VALUE "InternalName", "\0"
+				VALUE "Comments", "\0"
+				VALUE "LegalTrademarks", "\0"
 			END
 		END
 		BLOCK "VarFileInfo"
